@@ -1,0 +1,21 @@
+{
+  "name": "@cyper-me/agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./embeddings": "./src/embeddings/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^4.0.0",
+    "@cyper-me/shared": "workspace:*",
+    "ai": "^7.0.2"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "@cyper-me/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "typecheck": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    "drizzle-orm": "0.45.2",
+    "drizzle-typebox": "0.3.3"
+  },
+  "devDependencies": {
+    "@libsql/client": "0.17.4",
+    "drizzle-kit": "0.31.10",
+    "typescript": "6.0.3"
+  }
+}
