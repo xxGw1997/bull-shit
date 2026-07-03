@@ -19,7 +19,6 @@ export async function runRag(options: RunRagOptions): Promise<RagResponse> {
   const messages = buildMessages({
     ...options.input,
     input: `Context:\n${context}\n\nQuestion:\n${prompt}`,
-    prompt: undefined,
   })
 
   const result = await generateText({
@@ -29,9 +28,7 @@ export async function runRag(options: RunRagOptions): Promise<RagResponse> {
   })
 
   return {
-    output: result.text,
-    context: [...messages, ...result.responseMessages],
-    finishReason: result.finishReason,
-    sources,
+    ...result,
+    retrievalSources: sources,
   }
 }

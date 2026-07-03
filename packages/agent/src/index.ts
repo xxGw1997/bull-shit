@@ -1,21 +1,17 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { generateText, isStepCount, streamText, type ToolSet } from "ai";
 import {
   getRuntimeEnv,
   readRequiredEnv,
-  type AgentResponse,
   type RuntimeEnv,
 } from "@cyper-me/shared";
-import { buildMessages, getSystemPrompt } from "./agent/messages";
 import type {
   AgentRunInput,
   AgentService,
   AgentServiceOptions,
 } from "./agent/types";
-import { getWeather } from "./tools/get-weather";
-
-const DEFAULT_MAX_STEPS = 10;
-const defaultTools = { getWeather } satisfies ToolSet;
+import { runAgent, streamAgent } from "./agent/runtime";
+import { createAgentLimits } from "./harness/limits";
+import { createDefaultToolRegistry } from "./tools/registry";
 
 export function createAgentService(options: AgentServiceOptions): AgentService {
   const provider = createOpenAI({
@@ -23,38 +19,34 @@ export function createAgentService(options: AgentServiceOptions): AgentService {
     baseURL: options.baseUrl,
   });
   const languageModel = provider(options.model);
-  const tools = options.tools ?? defaultTools;
-  const maxSteps = options.maxSteps ?? DEFAULT_MAX_STEPS;
+  const tools = options.tools ?? createDefaultToolRegistry();
+  const limits = createAgentLimits({
+    maxSteps: options.maxSteps,
+    maxMessages: options.maxMessages,
+    maxMessageChars: options.maxMessageChars,
+    maxTotalChars: options.maxTotalChars,
+  });
 
-  async function runText(input: AgentRunInput): Promise<AgentResponse> {
-    const messages = buildMessages(input);
-    const result = await generateText({
+  async function runText(input: AgentRunInput) {
+    return runAgent(input, {
       model: languageModel,
-      system: getSystemPrompt(input),
-      messages,
       tools,
-      stopWhen: isStepCount(maxSteps),
+      limits,
     });
-
-    return {
-      output: result.text,
-      context: [...messages, ...result.responseMessages],
-      finishReason: result.finishReason,
-    };
   }
 
   return {
     run: runText,
     runText,
-    streamText(input) {
-      const result = streamText({
+    stream(input) {
+      return streamAgent(input, {
         model: languageModel,
-        system: getSystemPrompt(input),
-        messages: buildMessages(input),
         tools,
+        limits,
       });
-
-      return result.toTextStreamResponse();
+    },
+    streamText(input) {
+      return this.stream(input);
     },
   };
 }
@@ -70,9 +62,13 @@ export function createAgentServiceFromEnv(
 }
 
 export type {
+  AgentEvent,
+  AgentLimits,
   AgentRunInput,
+  AgentRunResult,
   AgentService,
   AgentServiceOptions,
+  AgentStreamResult,
 } from "./agent/types";
 
 
@@ -92,7 +88,7 @@ async function main() {
   const res = await agent.run({
     input: "what the weather in nanchang?",
   });
-  console.log("🟢:", res.output);
+  console.log("🟢:", res.text);
 }
 
 main();

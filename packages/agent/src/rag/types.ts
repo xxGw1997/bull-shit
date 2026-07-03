@@ -1,5 +1,6 @@
-import type { AgentResponse, VectorSearchResult } from '@cyper-me/shared'
+import type { VectorSearchResult } from '@cyper-me/shared'
+import type { AgentRunResult } from '../agent/types'
 
-export type RagResponse = AgentResponse & {
-  sources: VectorSearchResult[]
+export type RagResponse = AgentRunResult & {
+  retrievalSources: VectorSearchResult[]
 }
