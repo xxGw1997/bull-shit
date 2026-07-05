@@ -7,13 +7,13 @@ import {
   text,
   uniqueIndex,
 } from "drizzle-orm/sqlite-core";
-import type { ModelMessage } from "ai";
+import type { ModelMessage, UIMessage } from "ai";
 
 type JsonRecord = Record<string, unknown>;
 
-export type AiMessageContent = ModelMessage["content"];
+export type AiMessageContent = UIMessage["parts"];
 
-export type AiMessageRole = ModelMessage["role"];
+export type AiMessageRole = UIMessage["role"];
 
 export const md5_file_list = sqliteTable("md5_file_list", {
   id: text("id").primaryKey(),

@@ -14,15 +14,24 @@ export const chatModule = new Elysia({ name: "chat", prefix: "/api/chat" })
     }
   })
   .get("/create", ({ chatService }) => chatService.createSession())
-  .post(
-    "/:sessionId",
-    ({ params, body, chatService }) => chatService.sendMessage(params.sessionId, body.input),
+  .get(
+    "/:conversationId",
+    ({ params, chatService }) => chatService.getConversation(params.conversationId),
     {
       params: t.Object({
-        sessionId: t.String(),
+        conversationId: t.String(),
+      }),
+    },
+  )
+  .post(
+    "/:conversationId",
+    ({ params, body, chatService }) => chatService.streamMessage(params.conversationId, body.message),
+    {
+      params: t.Object({
+        conversationId: t.String(),
       }),
       body: t.Object({
-        input: t.String({ minLength: 1 }),
+        message: t.Any(),
       }),
     },
   );

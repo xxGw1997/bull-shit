@@ -10,11 +10,16 @@
     "typecheck": "tsc --project tsconfig.json"
   },
   "dependencies": {
+    "@ai-sdk/react": "^4.0.16",
+    "@elysiajs/eden": "^1.4.9",
+    "@tailwindcss/vite": "^4.3.2",
     "@tanstack/react-router": "1.170.16",
     "@vitejs/plugin-react": "6.0.3",
-    "vite": "8.1.0",
+    "ai": "^7.0.15",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "tailwindcss": "^4.3.2",
+    "vite": "8.1.0"
   },
   "devDependencies": {
     "@types/react": "19.2.17",

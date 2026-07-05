@@ -13,6 +13,8 @@ const app = new Elysia()
   .use(md5FileModule)
   .listen(port);
 
+export type App = typeof app;
+
 console.log(
   `API server running at http://${app.server?.hostname}:${app.server?.port}`,
 );
