@@ -163,6 +163,11 @@ article p {
   line-height: 1.7;
 }
 
+.message-item {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 96px;
+}
+
 @keyframes rise {
   from {
     opacity: 0;

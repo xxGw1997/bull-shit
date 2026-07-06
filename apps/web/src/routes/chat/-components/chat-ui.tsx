@@ -1,17 +1,5 @@
-import { KeyboardEvent, ReactNode } from 'react'
+import { FormEvent, KeyboardEvent, ReactNode } from 'react'
 import type { UIMessage } from 'ai'
-
-import { api } from '../api'
-
-export type ChatConversation = {
-  id: string
-  title: string | null
-  createdAt: string
-  updatedAt: string
-  messages: UIMessage[]
-}
-
-export const pendingChatMessageKey = (conversationId: string) => `pending-chat-message:${conversationId}`
 
 export function ComposerFooter({
   label,
@@ -41,12 +29,48 @@ export function ComposerFooter({
   )
 }
 
+export function ChatComposer({
+  input,
+  onInputChange,
+  onSubmit,
+  placeholder,
+  rows,
+  disabled,
+  footer,
+}: {
+  input: string
+  onInputChange: (value: string) => void
+  onSubmit: (event: FormEvent<HTMLFormElement>) => void
+  placeholder: string
+  rows: number
+  disabled: boolean
+  footer: ReactNode
+}) {
+  return (
+    <form
+      className="overflow-hidden rounded-[22px] border border-[rgba(21,32,24,0.12)] bg-[#fffaf5]/85 shadow-[0_24px_80px_rgba(21,32,24,0.10)]"
+      onSubmit={onSubmit}
+    >
+      <textarea
+        className="block min-h-24 w-full resize-y bg-transparent p-5 leading-7 text-[#152018] outline-none placeholder:text-[#5e6f5f]/75"
+        value={input}
+        onChange={(event) => onInputChange(event.target.value)}
+        onKeyDown={submitOnEnter}
+        placeholder={placeholder}
+        rows={rows}
+        disabled={disabled}
+      />
+      {footer}
+    </form>
+  )
+}
+
 export function MessageBubble({ message }: { message: UIMessage }) {
   const roleLabel = message.role === 'user' ? '你' : message.role === 'assistant' ? 'AI' : message.role
   const isUser = message.role === 'user'
 
   return (
-    <div className={`grid max-w-[min(76%,720px)] gap-2 max-md:max-w-[92%] ${isUser ? 'self-end justify-items-end' : 'self-start justify-items-start'}`}>
+    <div className={`message-item grid max-w-[min(76%,720px)] gap-2 max-md:max-w-[92%] ${isUser ? 'self-end justify-items-end' : 'self-start justify-items-start'}`}>
       <div className="text-xs font-black uppercase text-[#5e6f5f]">{roleLabel}</div>
       <div
         className={`whitespace-pre-wrap break-words rounded-[18px] border px-4 py-3 leading-7 ${
@@ -210,37 +234,4 @@ export function submitOnEnter(event: KeyboardEvent<HTMLTextAreaElement>) {
     event.preventDefault()
     event.currentTarget.form?.requestSubmit()
   }
-}
-
-export async function createChatConversation() {
-  const { data, error } = await api.api.chat.create.get()
-
-  if (error || !data || !('conversationId' in data)) {
-    throw error
-  }
-
-  return data
-}
-
-export async function getChatConversation(conversationId: string): Promise<ChatConversation> {
-  const { data, error } = await api.api.chat({ conversationId }).get()
-
-  if (error || !data || !('messages' in data)) {
-    throw error
-  }
-
-  return data as ChatConversation
-}
-
-export function toErrorMessage(error: unknown, fallback: string) {
-  if (error instanceof Error) {
-    return error.message
-  }
-
-  if (error && typeof error === 'object' && 'value' in error) {
-    const value = (error as { value?: { message?: string } }).value
-    return value?.message ?? fallback
-  }
-
-  return fallback
 }

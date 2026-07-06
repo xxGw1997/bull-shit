@@ -1,3 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/about')({
+  component: AboutPage,
+})
+
 export function AboutPage() {
   return (
     <section className="panel">
@@ -10,7 +16,7 @@ export function AboutPage() {
         </article>
         <article>
           <h2>apps/web</h2>
-          <p>React app powered by Vite and TanStack Router code-based routes.</p>
+          <p>React app powered by Vite and TanStack Router file-based routes.</p>
         </article>
       </div>
     </section>

@@ -1,4 +1,8 @@
-import { Link, Outlet } from '@tanstack/react-router'
+import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
+
+export const Route = createRootRoute({
+  component: RootLayout,
+})
 
 export function RootLayout() {
   return (

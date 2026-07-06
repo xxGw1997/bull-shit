@@ -13,7 +13,7 @@
     "@ai-sdk/react": "^4.0.16",
     "@elysiajs/eden": "^1.4.9",
     "@tailwindcss/vite": "^4.3.2",
-    "@tanstack/react-router": "1.170.16",
+    "@tanstack/react-router": "1.170.17",
     "@vitejs/plugin-react": "6.0.3",
     "ai": "^7.0.15",
     "react": "19.2.7",
@@ -22,6 +22,7 @@
     "vite": "8.1.0"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.168.19",
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "typescript": "6.0.3"
