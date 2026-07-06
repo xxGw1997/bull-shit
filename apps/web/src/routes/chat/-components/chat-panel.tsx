@@ -1,8 +1,9 @@
-import { ChatConversation } from '../-api/chat-api'
+import type { UIMessage } from 'ai'
+
 import { useChatPanel } from '../-hooks/use-chat-panel'
 import { ChatComposer, ChatNotice, ComposerFooter, MessageBubble } from './chat-ui'
 
-export function ChatPanel({ conversation }: { conversation: ChatConversation }) {
+export function ChatPanel({ conversation }: { conversation: { id: string; messages: UIMessage[] } }) {
   const { input, setInput, scrollRef, messages, status, error, stop, regenerate, canSubmit, handleSubmit } = useChatPanel(conversation)
 
   return (

@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react'
+import type { UIMessage } from 'ai'
 
-import { ChatConversation, getChatConversation, toErrorMessage } from '../-api/chat-api'
+import { client } from '../../../api'
+import { toErrorMessage } from '../-api/chat-api'
 
 export function useChatConversation(conversationId: string) {
-  const [conversation, setConversation] = useState<ChatConversation | null>(null)
+  const [conversation, setConversation] = useState<{
+    id: string
+    messages: UIMessage[]
+  } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
 
@@ -15,9 +20,14 @@ export function useChatConversation(conversationId: string) {
       setLoadError(null)
 
       try {
-        const nextConversation = await getChatConversation(conversationId)
+        const { data, error } = await client.api.chat({ conversationId }).get()
+
+        if (error || !data || !('messages' in data)) {
+          throw error
+        }
+
         if (isCurrent) {
-          setConversation(nextConversation)
+          setConversation(data)
         }
       } catch (unknownError) {
         if (isCurrent) {

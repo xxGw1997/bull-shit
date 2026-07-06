@@ -1,7 +1,8 @@
 import { FormEvent, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
-import { createChatConversation, toErrorMessage } from '../-api/chat-api'
+import { client } from '../../../api'
+import { toErrorMessage } from '../-api/chat-api'
 import { savePendingChatMessage } from '../-api/pending-message'
 
 export function useCreateChat() {
@@ -23,9 +24,14 @@ export function useCreateChat() {
     setError(null)
 
     try {
-      const conversation = await createChatConversation()
-      savePendingChatMessage(conversation.conversationId, message)
-      await navigate({ to: '/chat/$conversationId', params: { conversationId: conversation.conversationId } })
+      const { data, error } = await client.api.chat.create.get()
+
+      if (error || !data || !('conversationId' in data)) {
+        throw error
+      }
+
+      savePendingChatMessage(data.conversationId, message)
+      await navigate({ to: '/chat/$conversationId', params: { conversationId: data.conversationId } })
     } catch (unknownError) {
       setError(toErrorMessage(unknownError, '创建对话失败，请稍后再试。'))
       setStatus('idle')
