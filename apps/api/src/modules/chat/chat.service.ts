@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { createAgentServiceFromEnv, type AgentService } from "@cyper-me/agent";
+import type { ChatUIMessage } from "@cyper-me/shared";
 import {
   convertToModelMessages,
   createIdGenerator,
@@ -15,11 +16,6 @@ import {
   type db as database,
 } from "@cyper-me/database";
 import { and, eq, isNull } from "drizzle-orm";
-
-type ChatUIMessage = UIMessage<{
-  createdAt?: string;
-  sequence?: number;
-}>;
 
 export class ChatService {
   constructor(

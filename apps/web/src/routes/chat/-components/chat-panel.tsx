@@ -1,9 +1,9 @@
-import type { UIMessage } from 'ai'
+import type { ChatUIMessage } from '@cyper-me/shared'
 
 import { useChatPanel } from '../-hooks/use-chat-panel'
 import { ChatComposer, ChatNotice, ComposerFooter, MessageBubble } from './chat-ui'
 
-export function ChatPanel({ conversation }: { conversation: { id: string; messages: UIMessage[] } }) {
+export function ChatPanel({ conversation }: { conversation: { id: string; messages: ChatUIMessage[] } }) {
   const { input, setInput, scrollRef, messages, status, error, stop, regenerate, canSubmit, handleSubmit } = useChatPanel(conversation)
 
   return (

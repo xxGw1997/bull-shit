@@ -68,7 +68,6 @@ export type {
   AgentRunResult,
   AgentService,
   AgentServiceOptions,
-  AgentStreamResult,
 } from "./agent/types";
 
 

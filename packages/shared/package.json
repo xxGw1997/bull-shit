@@ -10,6 +10,7 @@
     "typecheck": "tsc --project tsconfig.json"
   },
   "devDependencies": {
+    "ai": "^7.0.15",
     "typescript": "6.0.3"
   }
 }

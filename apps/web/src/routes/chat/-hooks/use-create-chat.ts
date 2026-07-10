@@ -2,8 +2,8 @@ import { FormEvent, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 
 import { client } from '../../../api'
-import { toErrorMessage } from '../-api/chat-api'
-import { savePendingChatMessage } from '../-api/pending-message'
+import { toErrorMessage } from '../-utils/errors'
+import { savePendingChatMessage } from '../-utils/pending-message'
 
 export function useCreateChat() {
   const navigate = useNavigate()

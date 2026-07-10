@@ -1,10 +1,11 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react'
-import { DefaultChatTransport, type UIMessage } from 'ai'
+import { DefaultChatTransport } from 'ai'
+import type { ChatUIMessage } from '@cyper-me/shared'
 
-import { consumePendingChatMessage } from '../-api/pending-message'
+import { consumePendingChatMessage } from '../-utils/pending-message'
 
-export function useChatPanel(conversation: { id: string; messages: UIMessage[] }) {
+export function useChatPanel(conversation: { id: string; messages: ChatUIMessage[] }) {
   const [input, setInput] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
   const pendingMessageSentRef = useRef(false)

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
-import type { UIMessage } from 'ai'
+import type { ChatUIMessage } from '@cyper-me/shared'
 
 import { client } from '../../../api'
-import { toErrorMessage } from '../-api/chat-api'
+import { toErrorMessage } from '../-utils/errors'
 
 export function useChatConversation(conversationId: string) {
   const [conversation, setConversation] = useState<{
     id: string
-    messages: UIMessage[]
+    messages: ChatUIMessage[]
   } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
